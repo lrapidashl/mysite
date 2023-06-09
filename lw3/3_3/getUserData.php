@@ -6,13 +6,14 @@ $imgErr = '';
 
 function isUserUniq(string $fileName, string $id): bool
 {
-    if (!file_get_contents($fileName))
+    $fileData = file_get_contents($fileName);
+    if (!$fileData)
     {
         return true;
     }
     else
     {
-        $json = file_get_contents($fileName);
+        $json = $fileData;
         $users = json_decode($json); 
         foreach ($users as $key => $value)
         {

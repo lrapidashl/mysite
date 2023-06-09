@@ -1,0 +1,34 @@
+index:
+    path: /
+    controller: App\Controller\UserController::index
+    methods: GET
+
+sign_up:
+    path: /signUp
+    controller: App\Controller\UserController::signUp
+    methods: GET
+
+add_user:
+    path: /user/create
+    controller: App\Controller\UserController::createUser
+    methods: POST
+
+catalog:
+    path: /catalog
+    controller: App\Controller\StorefrontController::index
+    methods: GET
+
+show_order:
+    path: /order/{orderId}
+    controller: App\Controller\StorefrontController::viewOrder
+    methods: GET
+
+delete_user:
+    path: /user/{userId}/delete
+    controller: App\Controller\UserController::deleteUser
+    methods: POST
+
+list_users:
+    path: /user/list/all
+    methods: GET
+    controller: App\Controller\UserController::listUsers

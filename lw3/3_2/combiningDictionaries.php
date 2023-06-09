@@ -1,45 +1,65 @@
 <?php
 
-function addDefinition(string $row, array &$arr): void
+function addDefinitionToArr(string $row, array &$definitionArr): void
 {
     $parsed = explode(':', $row);
     $key = $parsed[0];
     $value = (isset($parsed[1])) ? $parsed[1] : '';
-    $arr[$key] = $value;
+    $definitionArr[$key] = $value;
 }
 
 function addRowsFromFileToArray(string $fileName, array &$arr): void
 {
     $file = fopen($fileName, 'r');
-    while (!feof($file))
+    try
     {
-        $row = fgets($file);
-        if (!str_ends_with($row, "\n"))
+        while (!feof($file))
         {
-            $row .= "\n";
+            $row = fgets($file);
+            if (!str_ends_with($row, "\n"))
+            {
+                $row .= "\n";
+            }
+            addDefinitionToArr($row, $arr);
         }
-        addDefinition($row, $arr);
     }
-    fclose($file);
+    catch (Exception $e)
+    {
+        echo $e->getMessage() . "\n";
+    }
+    finally
+    {
+        fclose($file);
+    }
 }
 
 function writeArrToFile(string $fileName, array $arr): void
 {
     $file = fopen($fileName, 'w');
-    foreach ($arr as $key => $value)
+    try
     {
-        if ($value !== '')
+        foreach ($arr as $key => $value)
         {
-            fwrite($file, $key . ':' . $value);
+            if ($value !== '')
+            {
+                fwrite($file, $key . ':' . $value);
+            }
+            else
+            {
+                fwrite($file, $key);
+            }
         }
-        else
+        if (fstat($file)['size'] !== 0)
         {
-            fwrite($file, $key);
+            ftruncate($file, fstat($file)['size'] - 1);
         }
     }
-    if (fstat($file)['size'] !== 0)
+    catch (Exception $e)
     {
-        ftruncate($file, fstat($file)['size'] - 1);
+        echo $e->getMessage() . "\n";
     }
-    fclose($file);
+    finally
+    {
+        fclose($file);
+    }
 }

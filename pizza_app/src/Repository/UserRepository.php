@@ -1,108 +1,46 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Database;
+namespace App\Repository;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 
-class UserTable
+class UserRepository
 {
-    private \PDO $connection;
+    private EntityManagerInterface $entityManager;
+    private EntityRepository $repository;
 
-    public function __construct(\PDO $connection)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->connection = $connection;
+        $this->entityManager = $entityManager;
+        $this->repository = $entityManager->getRepository(User::class);
     }
 
-    // Извлекает из БД данные поста с указанным ID.
-    // Возвращает null, если пост не найден
-    public function find(int $userId): ?User
+    public function findById(int $userId): ?User
     {
-        $query = <<<SQL
-        SELECT
-            user_id,
-            first_name,
-            second_name,
-            email,
-            phone
-        FROM user
-        WHERE user_id = $userId
-        SQL;
-
-        $statement = $this->connection->query($query);
-        if ($row = $statement->fetch(\PDO::FETCH_ASSOC))
-        {
-            return $this->createUserFromRow($row);
-        }
-
-        return null;
+        return $this->repository->findOneBy(['user_id' => (string) $userId]);
     }
 
-    // Сохраняет юзера в таблицу user, возвращает ID юзера.
-    public function add(User $user): int
+    public function store(User $user): int
     {
-        $query = <<<SQL
-        INSERT INTO user (first_name, second_name, email, phone)
-        VALUES (:first_name, :second_name, :email, :phone)
-        SQL;
-
-        $statement = $this->connection->prepare($query);
-        $statement->execute([
-            ':first_name' => $user->getFirstName(),
-            ':second_name' => $user->getSecondName(),
-            ':email' => $user->getEmail(),
-            ':phone' => $user->getPhone()
-        ]);
-
-        return (int)$this->connection->lastInsertId();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        return $user->getUserId();
     }
 
-    public function delete(int $userId): void
+    public function delete(User $user): void
     {
-        $query = <<<SQL
-        DELETE FROM user WHERE user_id = :user_id
-        SQL;
-
-        $statement = $this->connection->prepare($query);
-        $statement->execute([
-            ':user_id' => $userId
-        ]);
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
     }
 
     /**
      * @return User[]
      */
-    public function list(): array
+    public function listAll(): array
     {
-        $query = <<<SQL
-        SELECT
-            user_id,
-            first_name,
-            second_name,
-            email,
-            phone
-        FROM user
-        SQL;
-
-        $statement = $this->connection->query($query);
-
-        $users = [];
-        while ($row = $statement->fetch(\PDO::FETCH_ASSOC))
-        {
-            $users[] = $this->createUserFromRow($row);
-        }
-
-        return $users;
-    }
-
-    private function createUserFromRow(array $row): User
-    {
-        return new User(
-            (int)$row['user_id'],
-            $row['first_name'],
-            $row['second_name'],
-            $row['email'],
-            $row['phone']
-        );
+        return $this->repository->findAll();
     }
 }

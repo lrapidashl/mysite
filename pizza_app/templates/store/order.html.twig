@@ -1,0 +1,14 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ order.order_id }}{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/store/order.ccs">
+{% endblock %}
+
+{% block content %}
+    <div>
+        {% include 'store/order_item.html.twig' with order %}
+    </div>
+{% endblock %}

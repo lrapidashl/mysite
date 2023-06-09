@@ -11,7 +11,7 @@
     <body>
         <?php 
             require_once 'validation.php';
-            require_once 'FromFormToJson.php';
+            require_once 'getUserData.php';
         ?>
         <h3>Введите данные:</h3>
         <span class="error"><?php echo $imgErr;?></span><br />

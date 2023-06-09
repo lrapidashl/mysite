@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Каталог{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/store/catalog.css">
+{% endblock %}
+
+{% block content %}
+    <div class="orders">
+        {% for order in orders_list %}
+            <form action="{{ path('show_order', {orderId: order.order_id}) }}" method="get" class="orders__order">
+                {% include 'store/order_item.html.twig' with order %}
+                <button type="submit" class="order__button">Заказать</button>
+            </form>
+        {% endfor %}
+    </div>
+{% endblock %}

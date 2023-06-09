@@ -1,108 +1,46 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Database;
+namespace App\Repository;
 
 use App\Entity\Order;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 
-class OrderTable
+class OrderRepository
 {
-    private \PDO $connection;
+    private EntityManagerInterface $entityManager;
+    private EntityRepository $repository;
 
-    public function __construct(\PDO $connection)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->connection = $connection;
+        $this->entityManager = $entityManager;
+        $this->repository = $entityManager->getRepository(Order::class);
     }
 
-    // Извлекает из БД данные поста с указанным ID.
-    // Возвращает null, если пост не найден
-    public function find(int $orderId): ?Order
+    public function findById(int $orderId): ?Order
     {
-        $query = <<<SQL
-        SELECT
-            order_id,
-            name,
-            composition,
-            price,
-            img_path
-        FROM `order`
-        WHERE order_id = $orderId
-        SQL;
-
-        $statement = $this->connection->query($query);
-        if ($row = $statement->fetch(\PDO::FETCH_ASSOC))
-        {
-            return $this->createOrderFromRow($row);
-        }
-
-        return null;
+        return $this->repository->findOneBy(['orderId' => (string) $orderId]);
     }
 
-    // Сохраняет юзера в таблицу user, возвращает ID юзера.
-    public function add(Order $order): int
+    public function store(Order $order): int
     {
-        $query = <<<SQL
-        INSERT INTO `order` (name, composition, price, img_path)
-        VALUES (:name, :composition, :ptice, :img_path)
-        SQL;
-
-        $statement = $this->connection->prepare($query);
-        $statement->execute([
-            ':name' => $order->getName(),
-            ':composition' => $order->getComposition(),
-            ':price' => $order->getPrice(),
-            ':img_path' => $order->getImgPath()
-        ]);
-
-        return (int)$this->connection->lastInsertId();
+        $this->entityManager->persist($order);
+        $this->entityManager->flush();
+        return $order->getOrderId();
     }
 
-    public function delete(int $orderId): void
+    public function delete(Order $order): void
     {
-        $query = <<<SQL
-        DELETE FROM `order` WHERE order_id = :order_id
-        SQL;
-
-        $statement = $this->connection->prepare($query);
-        $statement->execute([
-            ':order_id' => $orderId
-        ]);
+        $this->entityManager->remove($order);
+        $this->entityManager->flush();
     }
 
     /**
      * @return Order[]
      */
-    public function list(): array
+    public function listAll(): array
     {
-        $query = <<<SQL
-        SELECT
-            order_id,
-            name,
-            composition,
-            price,
-            img_path
-        FROM `order`
-        SQL;
-
-        $statement = $this->connection->query($query);
-
-        $orders = [];
-        while ($row = $statement->fetch(\PDO::FETCH_ASSOC))
-        {
-            $orders[] = $this->createOrderFromRow($row);
-        }
-
-        return $orders;
-    }
-
-    private function createOrderFromRow(array $row): Order
-    {
-        return new Order(
-            (int)$row['order_id'],
-            $row['name'],
-            $row['composition'],
-            $row['price'],
-            $row['img_path']
-        );
+        return $this->repository->findAll();
     }
 }

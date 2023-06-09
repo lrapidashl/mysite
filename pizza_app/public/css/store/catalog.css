@@ -1,0 +1,42 @@
+.orders {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 48px;
+    margin: 120px 250px 0;
+}
+
+.orders__order {
+    display: flex;
+    flex-flow: column;
+    gap: 7px;
+    width: 240px;
+    background: #F8F8F8;
+    border-radius: 5px;
+}
+
+.order__title {
+    margin: 0 5px;
+    font: 400 24px "Kumbh sans", sans-serif;
+}
+
+.order__composition {
+    flex-grow: 1;
+    margin: 0 5px;
+    font: 400 14px "Kumbh Sans", sans-serif;
+}
+
+.order__price {
+    margin: 0 5px;
+    font: 400 15px "Kumbh Sans", sans-serif;
+}
+
+.order__button {
+    margin: 0 5px 10px;
+    align-self: flex-end;
+    width: 100px;
+    background: #E3A52C;
+    border: none;
+    border-radius: 20px;
+    font: 400 14px "Kumbh Sans", sans-serif;;
+}
