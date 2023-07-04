@@ -1,0 +1,22 @@
+{% extends "auth_base.html.twig" %}
+
+{% block title %}Create order{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/form/create.css">
+{% endblock %}
+{% block content %}
+    {% include 'menu.html.twig' %}
+    <div class="form">
+        <h1 class="form__title">Новая пицца</h1>
+        {{ form_start(form, {'class': 'form'}) }}
+            <div class="form__inputs">
+                {{ form_widget(form.name) }}
+                {{ form_widget(form.composition) }}
+                {{ form_widget(form.price) }}
+                {{ form_widget(form.image_path) }}
+                {{ form_widget(form.create) }}
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

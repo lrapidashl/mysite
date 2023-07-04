@@ -20,7 +20,7 @@ class OrderRepository
 
     public function findById(int $orderId): ?Order
     {
-        return $this->repository->findOneBy(['orderId' => (string) $orderId]);
+        return $this->repository->find($orderId);
     }
 
     public function store(Order $order): int
@@ -39,7 +39,7 @@ class OrderRepository
     /**
      * @return Order[]
      */
-    public function listAll(): array
+    public function listOrders(): array
     {
         return $this->repository->findAll();
     }

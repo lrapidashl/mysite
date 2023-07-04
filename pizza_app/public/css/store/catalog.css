@@ -3,13 +3,14 @@
     flex-flow: row wrap;
     justify-content: center;
     gap: 48px;
-    margin: 120px 250px 0;
+    margin: 120px 200px 50px;
 }
 
 .orders__order {
     display: flex;
     flex-flow: column;
     gap: 7px;
+    min-height: 280px;
     width: 240px;
     background: #F8F8F8;
     border-radius: 5px;
@@ -18,6 +19,10 @@
 .order__title {
     margin: 0 5px;
     font: 400 24px "Kumbh sans", sans-serif;
+}
+
+.order__img {
+    height: 160px;
 }
 
 .order__composition {
@@ -31,12 +36,23 @@
     font: 400 15px "Kumbh Sans", sans-serif;
 }
 
+.order__buttons {
+    display: flex;
+    flex-flow: row-reverse;
+    justify-content: space-between;
+}
+
 .order__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 0 5px 10px;
     align-self: flex-end;
     width: 100px;
     background: #E3A52C;
     border: none;
     border-radius: 20px;
-    font: 400 14px "Kumbh Sans", sans-serif;;
+    font: 400 14px "Kumbh Sans", sans-serif;
+    color: #000000;
+    text-decoration: none;
 }

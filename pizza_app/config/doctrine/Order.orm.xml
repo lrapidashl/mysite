@@ -12,8 +12,12 @@
 
         <field name="name" column="name" type="string" length="200" nullable="false" />
         <field name="composition" column="composition" type="string" nullable="false" />
-        <field name="price" column="price" type="integer" nullable="false" />
+        <field name="price" column="price" type="string" length="20" nullable="false" />
         <field name="imgPath" column="img_path" type="string" length="200" nullable="false" />
+        <many-to-one field="image" target-entity="App\Entity\Image">
+            <join-column name="imageId" referenced-column-name="image_id" nullable="true" on-delete="SET NULL"/>
+        </many-to-one>
+        <field name="author" column="author" type="integer" nullable="true" />
 
     </entity>
 

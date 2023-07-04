@@ -1,0 +1,21 @@
+.order {
+    display: flex;
+    flex-flow: column;
+    gap: 20px;
+    margin: 50px 10%;
+}
+.order__img {
+    width: 480px;
+}
+
+.order__title {
+    font: 400 24px "Kumbh sans", sans-serif;
+}
+
+.order__composition {
+    font: 400 18px "Kumbh sans", sans-serif;
+}
+
+.order__price {
+    font: 400 16px "Kumbh sans", sans-serif;
+}

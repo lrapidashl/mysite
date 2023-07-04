@@ -1,4 +1,4 @@
-<img src="{{ absolute_url(asset(order.img_path)) }}" alt="pizza" class="order__img">
+<img src="{{ absolute_url(asset("/uploads/" ~ order.image_path)) }}" alt="pizza" class="order__img">
 <span class="order__title">{{ order.name }}</span>
 <p class="order__composition">{{ order.composition }}</p>
 <span class="order__price">{{ order.price }} руб.</span>

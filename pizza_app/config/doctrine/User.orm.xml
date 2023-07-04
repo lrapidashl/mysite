@@ -14,6 +14,12 @@
         <field name="secondName" column="second_name" type="string" length="200" nullable="false" />
         <field name="email" column="email" type="string" length="320" nullable="false" />
         <field name="phone" column="phone" type="string" length="14" nullable="false" />
+        <field name="password" column="password" type="string" length="200" />
+        <field name="avatarPath" column="avatar_path" type="string" length="200" nullable="true" />
+        <field name="role" column="role" type="integer" />
+        <many-to-one field="image" target-entity="App\Entity\Image">
+            <join-column name="imageId" referenced-column-name="image_id" nullable="true" on-delete="SET NULL"/>
+        </many-to-one>
 
     </entity>
 

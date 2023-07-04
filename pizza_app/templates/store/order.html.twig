@@ -4,11 +4,11 @@
 
 {% block head %}
     {{ parent() }}
-    <link rel="stylesheet" href="/css/store/order.ccs">
+    <link rel="stylesheet" href="/css/store/order.css">
 {% endblock %}
 
 {% block content %}
-    <div>
+    <div class="order">
         {% include 'store/order_item.html.twig' with order %}
     </div>
 {% endblock %}
